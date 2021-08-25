@@ -6,14 +6,16 @@ import { filter } from "../../redux/slices/filter";
 export default function SearchContact() {
   const dispatch = useDispatch();
   return (
-    <label>
+    <div>
       <title className={s.title}>Find contacts by name</title>
-      <input
-        type="text"
-        onChange={(evt) =>
-          dispatch(filter(evt.currentTarget.value.toLocaleLowerCase()))
-        }
-      />
-    </label>
+      <label>
+        <input
+          type="text"
+          onChange={(evt) =>
+            dispatch(filter(evt.currentTarget.value.toLocaleLowerCase()))
+          }
+        ></input>
+      </label>
+    </div>
   );
 }

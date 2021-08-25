@@ -1,41 +1,37 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addContact } from "../../redux/slices/items";
 import s from "./ContactForm.module.css";
 import { v4 as uuidv4 } from "uuid";
 
 export default function ContactForm() {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
-
   const dispatch = useDispatch();
+  const allContacts = useSelector((state) => state.contactsSlice);
 
-  const handleSetInfo = (e) => {
-    switch (e.target.name) {
-      case "name":
-        setName(e.target.value);
-        break;
-      case "number":
-        setNumber(e.target.value);
-        break;
+  const handleAddContact = (evt) => {
+    evt.preventDefault();
 
-      default:
-        return;
+    if (
+      allContacts.some(
+        (contact) => contact.name === evt.target.elements.inputName.value
+      )
+    ) {
+      alert(`${evt.target.elements.inputName.value} is already in contacts`);
+    } else {
+      dispatch(
+        addContact({
+          name: evt.target.elements.inputName.value,
+          number: evt.target.elements.inputNumber.value,
+          id: uuidv4(),
+        })
+      );
     }
+
+    evt.target.reset();
   };
 
-  const handleAddContact = (e) => {
-    e.preventDefault();
-    const id = uuidv4();
-    dispatch(addContact({ name, number, id }));
-
-    reset();
-  };
-
-  const reset = () => {
-    setName("");
-    setNumber("");
-  };
+  const numberInputId = uuidv4();
+  const nameInputId = uuidv4();
 
   return (
     <form onSubmit={handleAddContact} className={s.form}>
@@ -44,13 +40,12 @@ export default function ContactForm() {
         <input
           className={s.input}
           autoComplete="off"
-          onChange={handleSetInfo}
-          value={name}
+          name="inputName"
           type="text"
-          name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
           required
+          id={nameInputId}
         />
       </label>
       <label className={s.label}>
@@ -58,13 +53,12 @@ export default function ContactForm() {
         <input
           className={s.input}
           autoComplete="off"
-          onChange={handleSetInfo}
-          value={number}
           type="tel"
-          name="number"
+          name="inputNumber"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
           required
+          id={numberInputId}
         />
       </label>
       <button type="submit" className={s.btn}>

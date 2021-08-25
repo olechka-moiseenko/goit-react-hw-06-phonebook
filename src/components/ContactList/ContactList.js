@@ -4,17 +4,17 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../redux/slices/items";
 
 export default function ContactList() {
-  const contacts = useSelector((state) => state.items);
-  const filter = useSelector((state) => state.filter);
+  const allContacts = useSelector((state) => state.contactsSlice);
+  const filter = useSelector((state) => state.filterSlice);
   const dispatch = useDispatch();
 
-  const filteredContactList = contacts.filter((contacts) =>
-    contacts.name.toLocaleLowerCase().includes(filter)
+  const filteredContactList = allContacts.filter((contact) =>
+    contact.name.toLocaleLowerCase().includes(filter)
   );
 
   useEffect(() => {
-    localStorage.setItem("contactsList", JSON.stringify(contacts));
-  }, [contacts]);
+    localStorage.setItem("contactsList", JSON.stringify(allContacts));
+  }, [allContacts]);
 
   return (
     <ul className={s.contactList}>

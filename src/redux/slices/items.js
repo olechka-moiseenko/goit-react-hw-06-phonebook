@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const itemsSlice = createSlice({
-  name: "items",
-  initialState: [],
+const contactsSlice = createSlice({
+  name: "contacts",
+  initialState: JSON.parse(localStorage.getItem("contactsList")) ?? [],
   reducers: {
     addContact: (state, action) => [...state, action.payload],
     deleteContact: (state, action) =>
@@ -10,5 +10,5 @@ const itemsSlice = createSlice({
   },
 });
 
-export const { addContact, deleteContact } = itemsSlice.actions;
-export default itemsSlice.reducer;
+export const { addContact, deleteContact } = contactsSlice.actions;
+export default contactsSlice.reducer;

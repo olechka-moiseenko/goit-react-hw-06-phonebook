@@ -2,12 +2,12 @@
 // import { devToolsEnchancer } from 'redux-devtools-extension';
 // import { rootReducer } from '../reducers';
 import { configureStore } from "@reduxjs/toolkit";
-import items from "../slices/items";
-import filter from "../slices/filter";
+import contactsSlice from "../slices/items";
+import filterSlice from "../slices/filter";
 // const store = createStore(rootReducer, devToolsEnchancer());
 const rootReducer = {
-  items,
-  filter,
+  contactsSlice,
+  filterSlice,
 };
 
 const store = configureStore({
